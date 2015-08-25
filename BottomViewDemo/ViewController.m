@@ -20,7 +20,7 @@
 
 @end
 
-int mainHeight = 350;
+int mainHeight = 300;
 int mainWidth;
 @implementation ViewController
 
@@ -28,33 +28,62 @@ int mainWidth;
     
     [super viewDidLoad];
     mainWidth = self.view.bounds.size.width;
-    self.button=[[UIButton alloc]initWithFrame:CGRectMake(0, 0, 30, 30)];
-    self.button.backgroundColor=[UIColor redColor];
-    CGRect rect = CGRectMake(0, self.view.frame.size.height-20, mainWidth, mainHeight);
     UISwipeGestureRecognizer *recognizer;
     recognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeFrom)];
     [recognizer setDirection:(UISwipeGestureRecognizerDirectionUp)];
-//    [self.view addGestureRecognizer:recognizer];
+    [self.view addGestureRecognizer:recognizer];
     
     recognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeTo)];
     [recognizer setDirection:(UISwipeGestureRecognizerDirectionDown)];
-//    [self.view addGestureRecognizer:recognizer];
+    [self.view addGestureRecognizer:recognizer];
     
     
     
-    self.bottomView = [[UIView alloc] initWithFrame:rect];
-    self.bottomView.backgroundColor = [UIColor yellowColor];
-   UIImage *imageR=[UIImage imageNamed:@"liantu"];
-    UIImageView *imageView =[[UIImageView alloc] initWithFrame:CGRectMake(10, 10, mainWidth-20, 300)];
-    imageView.image=imageR;
-    imageView.backgroundColor=[UIColor whiteColor];
-    [self.bottomView addSubview:imageView];
+    self.bottomView = [[UIView alloc] init];
     [self.view addSubview:self.bottomView];
+    [self.bottomView setTranslatesAutoresizingMaskIntoConstraints:NO];
+    LAY_CONS_ADD(self.view, self.bottomView, NSLayoutAttributeTop, NSLayoutRelationEqual, self.view, NSLayoutAttributeBottom, 1, -20);
+    LAY_CONS_ADD(self.view, self.bottomView, NSLayoutAttributeHeight, NSLayoutRelationEqual, nil, NSLayoutAttributeHeight, 1, mainHeight);
+    LAY_CONS_ADD(self.view, self.bottomView, NSLayoutAttributeLeft, NSLayoutRelationEqual, self.view, NSLayoutAttributeLeft, 1, 10);
+    LAY_CONS_ADD(self.view, self.bottomView, NSLayoutAttributeRight, NSLayoutRelationEqual, self.view, NSLayoutAttributeRight, 1, -10);
+    
+    UIImageView *backgroundView =[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"zg_salesman_pop_m"]];
+    [self.bottomView addSubview:backgroundView];
+    [backgroundView setTranslatesAutoresizingMaskIntoConstraints:NO];
+    LAY_CONS_ADD(self.bottomView, backgroundView, NSLayoutAttributeTop, NSLayoutRelationEqual,self.bottomView, NSLayoutAttributeTop, 1, 10);
+    LAY_CONS_ADD(self.bottomView, backgroundView, NSLayoutAttributeLeft, NSLayoutRelationEqual,self.bottomView, NSLayoutAttributeLeft, 1, 0);
+    LAY_CONS_ADD(self.bottomView, backgroundView, NSLayoutAttributeRight, NSLayoutRelationEqual,self.bottomView, NSLayoutAttributeRight, 1, 0);
+    LAY_CONS_ADD(self.bottomView, backgroundView, NSLayoutAttributeBottom, NSLayoutRelationEqual,self.bottomView, NSLayoutAttributeBottom, 1, 0);
+    
+    UIImageView *backgroundTopView =[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"zg_salesman_pop_t"]];
+    [self.bottomView addSubview:backgroundTopView];
+    [backgroundTopView setTranslatesAutoresizingMaskIntoConstraints:NO];
+    LAY_CONS_ADD(self.bottomView, backgroundTopView, NSLayoutAttributeTop, NSLayoutRelationEqual,self.bottomView, NSLayoutAttributeTop, 1, 0);
+    LAY_CONS_ADD(self.bottomView, backgroundTopView, NSLayoutAttributeLeft, NSLayoutRelationEqual,self.bottomView, NSLayoutAttributeLeft, 1, 0);
+    LAY_CONS_ADD(self.bottomView, backgroundTopView, NSLayoutAttributeRight, NSLayoutRelationEqual,self.bottomView, NSLayoutAttributeRight, 1, 0);
+    LAY_CONS_ADD(self.bottomView, backgroundTopView, NSLayoutAttributeBottom, NSLayoutRelationEqual,backgroundView, NSLayoutAttributeTop, 1, 0);
+    
+    UIImageView *salesmanView =[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"liantu"]];
+    [self.bottomView addSubview:salesmanView];
+    [salesmanView setTranslatesAutoresizingMaskIntoConstraints:NO];
+    LAY_CONS_ADD(self.bottomView, salesmanView, NSLayoutAttributeTop, NSLayoutRelationEqual,self.bottomView, NSLayoutAttributeTop, 1, 20);
+    LAY_CONS_ADD(self.bottomView, salesmanView, NSLayoutAttributeLeft, NSLayoutRelationEqual,self.bottomView, NSLayoutAttributeLeft, 1, 20);
+    LAY_CONS_ADD(self.bottomView, salesmanView, NSLayoutAttributeRight, NSLayoutRelationEqual,self.bottomView, NSLayoutAttributeRight, 1, -20);
+    LAY_CONS_ADD(self.bottomView, salesmanView, NSLayoutAttributeHeight, NSLayoutRelationEqual,salesmanView, NSLayoutAttributeWidth, 1, 0);
+
+    
+    
+//   UIImage *imageR=[UIImage imageNamed:@"liantu"];
+//    UIImageView *imageView =[[UIImageView alloc] initWithFrame:CGRectMake(10, 10, mainWidth-20, 300)];
+//    imageView.image=imageR;
+//    imageView.backgroundColor=[UIColor whiteColor];
+//    [self.bottomView addSubview:imageView];
+    
     [self.view addSubview:self.button];
     
     //平移
-    UIPanGestureRecognizer *panGes=[[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(handlePan:)];
-    [self.bottomView addGestureRecognizer:panGes];
+//    UIPanGestureRecognizer *panGes=[[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(handlePan:)];
+//    [self.bottomView addGestureRecognizer:panGes];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -67,7 +96,7 @@ int mainWidth;
                          animations:^{
                              
                              CGRect rectNew2 = self.bottomView.frame;
-                             rectNew2.origin.y = rectNew2.origin.y-mainHeight;
+                             rectNew2.origin.y = self.view.frame.size.height-mainHeight;
                              self.bottomView.frame = rectNew2;
                          }
                          completion:^(BOOL finished){
